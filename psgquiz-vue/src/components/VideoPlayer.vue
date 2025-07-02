@@ -5,6 +5,10 @@ const props = defineProps<{
   isReady: boolean
 }>()
 
+const emit = defineEmits<{
+  'video-started': []
+}>()
+
 const videoRef = ref<HTMLVideoElement | null>(null)
 const isMuted = ref(true)
 const showMuteButton = ref(true)
@@ -31,6 +35,11 @@ onMounted(() => {
   const video = videoRef.value
   if (!video) return
 
+  // Emitir evento quando o vídeo começar
+  video.addEventListener('play', () => {
+    emit('video-started')
+  })
+
   forcePlay()
   video.addEventListener('canplay', forcePlay)
   video.addEventListener('loadeddata', forcePlay)
@@ -43,6 +52,9 @@ onUnmounted(() => {
 
   video.removeEventListener('canplay', forcePlay)
   video.removeEventListener('loadeddata', forcePlay)
+  video.removeEventListener('play', () => {
+    emit('video-started')
+  })
 })
 
 const toggleMute = () => {

@@ -1,0 +1,18 @@
+<svg width="400" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo -->
+  <rect width="400" height="500" fill="#f3f4f6"/>
+  
+  <!-- Silhueta da camisa -->
+  <path d="M100 150 L100 120 Q100 100 120 100 L130 100 Q140 90 160 90 L240 90 Q260 90 270 100 L280 100 Q300 100 300 120 L300 150 L320 170 Q330 180 330 190 L330 220 Q330 230 320 230 L300 230 L300 400 Q300 420 280 420 L120 420 Q100 420 100 400 L100 230 L80 230 Q70 230 70 220 L70 190 Q70 180 80 170 Z" fill="#1e3a8a"/>
+  
+  <!-- Detalhes da camisa -->
+  <circle cx="200" cy="200" r="30" fill="#ffffff" opacity="0.3"/>
+  <rect x="180" y="250" width="40" height="100" fill="#ffffff" opacity="0.2"/>
+  
+  <!-- Texto -->
+  <text x="200" y="320" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="14" font-weight="bold">THUNDER</text>
+  <text x="200" y="340" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="12">JERSEY</text>
+  
+  <!-- Número -->
+  <text x="200" y="280" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="36" font-weight="bold">0</text>
+</svg> 

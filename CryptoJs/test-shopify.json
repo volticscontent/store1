@@ -1,0 +1,24 @@
+{
+  "body": [
+    {
+      "body": [
+        {
+          "body": {
+            "id": 39233791459640,
+            "email": "ga@hotmail.com",
+            "sms_marketing_phone": 31982354128,
+            "total_price": "49.99",
+            "currency": "USD",
+            "line_items": [
+              {
+                "title": "Basketball Jersey 24-25",
+                "variant_title": "Large",
+                "price": "49.99"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+} 

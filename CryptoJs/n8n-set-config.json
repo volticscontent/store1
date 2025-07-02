@@ -1,0 +1,8 @@
+{
+  "email": "={{ $json.body[0].body[0].body.email || $json.body[0].body.email || $json.email }}",
+  "phone": "={{ $json.body[0].body[0].body.sms_marketing_phone || $json.body[0].body[0].body.phone || $json.body[0].body.phone || $json.phone }}",
+  "value": "={{ parseFloat($json.body[0].body[0].body.total_price || $json.body[0].body.total_price || $json.total_price) || 0 }}",
+  "currency": "={{ $json.body[0].body[0].body.currency || $json.body[0].body[0].body.presentment_currency || $json.body[0].body.currency || 'USD' }}",
+  "order_id": "={{ $json.body[0].body[0].body.id || $json.body[0].body[0].body.name || $json.body[0].body.id || $json.id }}",
+  "description": "={{ $json.body[0].body[0].body.line_items[0].title || $json.body[0].body[0].body.line_items[0].presentment_title || $json.body[0].body.line_items[0].title || 'Purchase from Shopify' }}"
+} 
