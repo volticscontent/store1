@@ -49,7 +49,7 @@ export default function ReviewsModal({
         <div className="p-6 border-b">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">
-              {showSavedOnly ? "Comentários Salvos" : "Comentários dos Clientes"} ({displayedReviews.length})
+              {showSavedOnly ? "Comentários Salvos" : "Who say about us"} ({displayedReviews.length})
             </h2>
             <button
               onClick={onClose}
@@ -57,46 +57,6 @@ export default function ReviewsModal({
             >
               <X className="h-6 w-6" />
             </button>
-          </div>
-
-          {/* Search and Filters */}
-          <div className="mt-4 flex gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Buscar comentários..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="px-4"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filtros
-            </Button>
-            <Button
-              variant={showSavedOnly ? "default" : "outline"}
-              onClick={() => setShowSavedOnly(!showSavedOnly)}
-              className="px-4"
-            >
-              <Bookmark className={`h-4 w-4 mr-2 ${showSavedOnly ? "fill-current" : ""}`} />
-              Salvos
-            </Button>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border rounded-md"
-            >
-              <option value="newest">Mais Recentes</option>
-              <option value="oldest">Mais Antigos</option>
-              <option value="highest_rating">Maior Avaliação</option>
-              <option value="lowest_rating">Menor Avaliação</option>
-              <option value="most_helpful">Mais Úteis</option>
-            </select>
           </div>
 
           {/* Quick Stats */}

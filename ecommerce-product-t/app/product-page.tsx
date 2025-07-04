@@ -8,6 +8,7 @@ import Footer from "@/components/Footer"
 import StickyBuyButton from "@/components/StickyBuyButton"
 import ReviewsModal from "@/components/ReviewsModal"
 import { useReviews } from "@/hooks/useReviews"
+import { ShopifyBuyButton } from "@/components/buy-button"
 
 export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState(0)
@@ -348,34 +349,24 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <div className="bg-white mt-2 p-4">
-        <div className="flex items-center justify-between mb-4">
-          <span className="font-medium">Quantity:</span>
-          <div className="flex items-center border rounded-lg">
-            <Button variant="ghost" size="sm" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3">
-              -
-            </Button>
-            <span className="px-4 py-2 border-x">{quantity}</span>
-            <Button variant="ghost" size="sm" onClick={() => setQuantity(quantity + 1)} className="px-3">
-              +
-            </Button>
+      <div className="bg-white mt-2 p-6">
+        <div className="w-full text-center">
+          <div className="inline-block w-full max-w-md mx-auto">
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <ShopifyBuyButton
+                domain="sryxr0-ff.myshopify.com"
+                storefrontAccessToken="cf54ba84fb3eeca3e76d2a30c008b2dc"
+                productId="9799464026398"
+                productName="Large Kitchen Pantry Cabinet Storage Organizer with Adjustable Shelves"
+                productPrice={73.57}
+                productImage="/placeholder.svg?height=400&width=400"
+                onAddToCart={(quantity) => {
+                  setCartItems(cartItems + quantity)
+                  setShowCart(true)
+                }}
+              />
+            </div>
           </div>
-        </div>
-
-        <div className="flex gap-3">
-          <Button
-            className="flex-1 bg-orange-500 hover:bg-orange-600"
-            onClick={() => {
-              setCartItems(cartItems + quantity)
-              setShowCart(true)
-            }}
-          >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
-          <Button variant="outline" className="flex-1 bg-transparent">
-            Buy Now
-          </Button>
         </div>
       </div>
 
@@ -508,9 +499,9 @@ export default function ProductPage() {
       )}
 
       <StickyBuyButton
-        price="$45.99"
-        originalPrice="$65.99"
-        discount={30}
+        price="$73.57"
+        originalPrice="$125.99"
+        discount={42}
         onAddToCart={(qty) => {
           setCartItems(cartItems + qty)
         }}

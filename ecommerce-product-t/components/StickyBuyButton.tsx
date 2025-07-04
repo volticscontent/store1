@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart, Heart, Minus, Plus } from "lucide-react"
+import { ShopifyBuyButtonCompact } from "@/components/buy-button"
 
 interface StickyBuyButtonProps {
   price?: string
@@ -15,9 +16,9 @@ interface StickyBuyButtonProps {
 }
 
 export default function StickyBuyButton({
-  price = "$45.99",
-  originalPrice = "$65.99",
-  discount = 30,
+  price = "$73.57",
+  originalPrice = "$125.99",
+  discount = 42,
   onAddToCart,
   onToggleWishlist,
   cartItems = 0,
@@ -63,14 +64,20 @@ export default function StickyBuyButton({
                 >
                   <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
                 </Button>
-                <Button
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
-                  onClick={handleAddToCart}
-                  size="sm"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-1" />
-                  Add to Cart
-                </Button>
+                
+                <ShopifyBuyButtonCompact
+                  domain="sryxr0-ff.myshopify.com"
+                  storefrontAccessToken="cf54ba84fb3eeca3e76d2a30c008b2dc"
+                  productId="9799464026398"
+                  productName="Large Kitchen Pantry Cabinet Storage Organizer with Adjustable Shelves"
+                  productPrice={73.57}
+                  productImage="/placeholder.svg?height=400&width=400"
+                  onAddToCart={(quantity) => {
+                    onAddToCart?.(quantity)
+                    setShowCart(true)
+                    setTimeout(() => setShowCart(false), 2000)
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -82,13 +89,10 @@ export default function StickyBuyButton({
         <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
           <div className="flex items-center gap-2">
             <ShoppingCart className="h-4 w-4" />
-            <span>Added {quantity} item(s) to cart!</span>
+            <span>Produto adicionado ao carrinho!</span>
           </div>
         </div>
       )}
-
-      {/* Spacer to prevent content overlap */}
-      <div className="h-20 md:h-16" />
     </>
   )
 } 
