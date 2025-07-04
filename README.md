@@ -159,4 +159,4 @@ Se você tiver alguma dúvida ou sugestão, abra uma issue no GitHub ou entre em
 
 ---
 
-**Desenvolvido com ❤️ usando Next.js e TypeScript** 
+**Desenvolvido com ❤️ usando Next.js e TypeScript** # te
