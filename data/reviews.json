@@ -1,0 +1,508 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "productId": 1,
+      "user": {
+        "name": "Emily Rodriguez",
+        "initial": "E",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase", "Top Reviewer"],
+        "totalReviews": 47,
+        "helpfulVotes": 312
+      },
+      "rating": 5,
+      "title": "Excellent quality and functionality!",
+      "content": "Perfect for my kitchen! The quality is amazing and it fits perfectly in my pantry. Assembly was straightforward and the shelves are very sturdy. I highly recommend this product for anyone looking for organization.",
+      "date": "2025-01-01",
+      "dateFormatted": "2 days ago",
+      "helpful": {
+        "count": 12,
+        "total": 15
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+1A",
+        "/placeholder.svg?height=100&width=100&text=Review+1B"
+      ],
+      "pros": [
+        "Excellent quality",
+        "Easy assembly",
+        "Sturdy shelves",
+        "Perfect fit"
+      ],
+      "cons": [
+        "Price is a bit high"
+      ],
+      "tags": ["quality", "organization", "kitchen", "easy-assembly"],
+      "category": "Positive",
+      "sentiment": "very_positive",
+      "language": "en"
+    },
+    {
+      "id": 2,
+      "productId": 1,
+      "user": {
+        "name": "James Thompson",
+        "initial": "J",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 23,
+        "helpfulVotes": 156
+      },
+      "rating": 4,
+      "title": "Good value for money",
+      "content": "Good value for money. The cabinet is solid and has plenty of storage space. Only minor issue was one of the screws was missing but customer service sent a replacement quickly.",
+      "date": "2024-12-26",
+      "dateFormatted": "1 week ago",
+      "helpful": {
+        "count": 8,
+        "total": 10
+      },
+      "verified": true,
+      "photos": [],
+      "pros": [
+        "Good price",
+        "Plenty of space",
+        "Quick customer service"
+      ],
+      "cons": [
+        "Missing screw",
+        "Packaging could be better"
+      ],
+      "tags": ["value-for-money", "space", "customer-service"],
+      "category": "Positive",
+      "sentiment": "positive",
+      "language": "en"
+    },
+    {
+      "id": 3,
+      "productId": 1,
+      "user": {
+        "name": "Sarah Mitchell",
+        "initial": "S",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase", "Early Reviewer"],
+        "totalReviews": 89,
+        "helpfulVotes": 523
+      },
+      "rating": 5,
+      "title": "Exceeded my expectations!",
+      "content": "Exceeded my expectations! The finish looks premium and it's very spacious. Perfect for organizing all my kitchen supplies. Highly recommend! The quality of the finish is truly impressive.",
+      "date": "2024-12-19",
+      "dateFormatted": "2 weeks ago",
+      "helpful": {
+        "count": 15,
+        "total": 18
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+3A"
+      ],
+      "pros": [
+        "Premium finish",
+        "Very spacious",
+        "Perfect organization",
+        "Modern design"
+      ],
+      "cons": [],
+      "tags": ["finish", "spacious", "organization", "design"],
+      "category": "Positive",
+      "sentiment": "very_positive",
+      "language": "en"
+    },
+    {
+      "id": 4,
+      "productId": 1,
+      "user": {
+        "name": "Michael Anderson",
+        "initial": "M",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 34,
+        "helpfulVotes": 198
+      },
+      "rating": 5,
+      "title": "Excellent build quality",
+      "content": "Excellent build quality and very easy to assemble. The adjustable shelves are a great feature. Fits perfectly in my small kitchen space. Durable material and well finished.",
+      "date": "2024-12-12",
+      "dateFormatted": "3 weeks ago",
+      "helpful": {
+        "count": 9,
+        "total": 12
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+4A",
+        "/placeholder.svg?height=100&width=100&text=Review+4B",
+        "/placeholder.svg?height=100&width=100&text=Review+4C"
+      ],
+      "pros": [
+        "Easy assembly",
+        "Adjustable shelves",
+        "Perfect for small spaces",
+        "Durable material"
+      ],
+      "cons": [],
+      "tags": ["quality", "assembly", "adjustable-shelves", "small-space"],
+      "category": "Positive",
+      "sentiment": "very_positive",
+      "language": "en"
+    },
+    {
+      "id": 5,
+      "productId": 1,
+      "user": {
+        "name": "Lisa Chen",
+        "initial": "L",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 12,
+        "helpfulVotes": 67
+      },
+      "rating": 4,
+      "title": "Solid product, but limited color options",
+      "content": "Really happy with this purchase. The cabinet is sturdy and looks great. Only wish it came in more color options. Very good quality, I recommend it!",
+      "date": "2024-12-03",
+      "dateFormatted": "1 month ago",
+      "helpful": {
+        "count": 6,
+        "total": 9
+      },
+      "verified": true,
+      "photos": [],
+      "pros": [
+        "Sturdy product",
+        "Attractive appearance",
+        "Good overall quality"
+      ],
+      "cons": [
+        "Limited color options",
+        "Could have more finishes"
+      ],
+      "tags": ["sturdy", "appearance", "colors", "quality"],
+      "category": "Positive", 
+      "sentiment": "positive",
+      "language": "en"
+    },
+    {
+      "id": 6,
+      "productId": 1,
+      "user": {
+        "name": "David Williams",
+        "initial": "D",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase", "Top Reviewer"],
+        "totalReviews": 156,
+        "helpfulVotes": 892
+      },
+      "rating": 5,
+      "title": "Amazing storage solution!",
+      "content": "Amazing storage solution! The quality is top-notch and it was surprisingly easy to put together. Great value for the price. I would definitely buy again!",
+      "date": "2024-12-03",
+      "dateFormatted": "1 month ago", 
+      "helpful": {
+        "count": 11,
+        "total": 13
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+6A"
+      ],
+      "pros": [
+        "Superior quality",
+        "Surprisingly easy assembly",
+        "Excellent value for price",
+        "Complete solution"
+      ],
+      "cons": [],
+      "tags": ["storage", "superior-quality", "easy-assembly", "value"],
+      "category": "Positive",
+      "sentiment": "very_positive", 
+      "language": "en"
+    },
+    {
+      "id": 7,
+      "productId": 1,
+      "user": {
+        "name": "Amanda Foster",
+        "initial": "A",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 8,
+        "helpfulVotes": 34
+      },
+      "rating": 5,
+      "title": "Perfect for small apartments",
+      "content": "I bought this organizer for my small apartment and it was the best decision! It made great use of the kitchen space and has excellent quality. Assembly was very simple and quick.",
+      "date": "2024-11-28",
+      "dateFormatted": "5 weeks ago",
+      "helpful": {
+        "count": 7,
+        "total": 8
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+7A",
+        "/placeholder.svg?height=100&width=100&text=Review+7B"
+      ],
+      "pros": [
+        "Perfect for small spaces",
+        "Excellent space utilization",
+        "Superior quality",
+        "Simple assembly"
+      ],
+      "cons": [],
+      "tags": ["small-apartment", "space", "quality", "simple-assembly"],
+      "category": "Positive",
+      "sentiment": "very_positive",
+      "language": "en"
+    },
+    {
+      "id": 8,
+      "productId": 1,
+      "user": {
+        "name": "Christopher Martinez",
+        "initial": "C",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 19,
+        "helpfulVotes": 78
+      },
+      "rating": 3,
+      "title": "OK product, but arrived with minor defects",
+      "content": "The product itself is good, but it arrived with some scratches on the side. Nothing that compromises functionality, but for the price I expected it to come perfect. Customer service was helpful in resolving the issue.",
+      "date": "2024-11-20",
+      "dateFormatted": "6 weeks ago",
+      "helpful": {
+        "count": 4,
+        "total": 8
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+8A"
+      ],
+      "pros": [
+        "Good functionality",
+        "Helpful customer service"
+      ],
+      "cons": [
+        "Arrived with scratches",
+        "Insufficient packaging",
+        "High price for defects"
+      ],
+      "tags": ["defects", "scratches", "packaging", "customer-service"],
+      "category": "Mixed",
+      "sentiment": "neutral",
+      "language": "en"
+    },
+    {
+      "id": 9,
+      "productId": 1,
+      "user": {
+        "name": "Jennifer Lewis",
+        "initial": "J",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase", "Helpful Reviewer"],
+        "totalReviews": 73,
+        "helpfulVotes": 441
+      },
+      "rating": 5,
+      "title": "Exceeded all expectations!",
+      "content": "This organizer transformed my kitchen completely! The build quality is outstanding and it holds so much more than I expected. Assembly instructions were clear and everything fit perfectly. Highly recommend to anyone looking for kitchen storage solutions.",
+      "date": "2024-11-15",
+      "dateFormatted": "7 weeks ago",
+      "helpful": {
+        "count": 18,
+        "total": 21
+      },
+      "verified": true,
+      "photos": [
+        "/placeholder.svg?height=100&width=100&text=Review+9A",
+        "/placeholder.svg?height=100&width=100&text=Review+9B",
+        "/placeholder.svg?height=100&width=100&text=Review+9C",
+        "/placeholder.svg?height=100&width=100&text=Review+9D"
+      ],
+      "pros": [
+        "Completely transformed the kitchen",
+        "Excellent build quality",
+        "Surprising capacity",
+        "Clear instructions",
+        "Perfect fit"
+      ],
+      "cons": [],
+      "tags": ["transformation", "build-quality", "capacity", "instructions"],
+      "category": "Positive",
+      "sentiment": "very_positive",
+      "language": "en"
+    },
+    {
+      "id": 10,
+      "productId": 1,
+      "user": {
+        "name": "Robert Johnson",
+        "initial": "R",
+        "avatar": "/placeholder-user.jpg",
+        "verified": true,
+        "badges": ["Verified Purchase"],
+        "totalReviews": 5,
+        "helpfulVotes": 23
+      },
+      "rating": 4,
+      "title": "Good product, delivery took a while",
+      "content": "The organizer is really good, good quality and very functional. The only negative point was the delay in delivery, but the product made up for the wait. I recommend it for those who have patience with deadlines.",
+      "date": "2024-11-10",
+      "dateFormatted": "8 weeks ago",
+      "helpful": {
+        "count": 5,
+        "total": 7
+      },
+      "verified": true,
+      "photos": [],
+      "pros": [
+        "Good quality",
+        "Very functional",
+        "Made up for the wait"
+      ],
+      "cons": [
+        "Delivery delay",
+        "Deadline not met"
+      ],
+      "tags": ["quality", "functional", "delivery", "deadline"],
+      "category": "Positive",
+      "sentiment": "positive",
+      "language": "en"
+    }
+  ],
+  "statistics": {
+    "totalReviews": 10,
+    "averageRating": 4.4,
+    "ratingDistribution": {
+      "5": 6,
+      "4": 3,
+      "3": 1,
+      "2": 0,
+      "1": 0
+    },
+    "verifiedPurchases": 10,
+    "reviewsWithPhotos": 6,
+    "totalPhotos": 15,
+    "totalHelpfulVotes": 105,
+    "languages": {
+      "en": 10
+    },
+    "sentimentAnalysis": {
+      "very_positive": 6,
+      "positive": 3,
+      "neutral": 1,
+      "negative": 0,
+      "very_negative": 0
+    }
+  },
+  "filters": {
+    "ratings": [
+      { "value": "all", "label": "All reviews", "count": 10 },
+      { "value": "5", "label": "5 stars", "count": 6 },
+      { "value": "4", "label": "4 stars", "count": 3 },
+      { "value": "3", "label": "3 stars", "count": 1 },
+      { "value": "2", "label": "2 stars", "count": 0 },
+      { "value": "1", "label": "1 star", "count": 0 }
+    ],
+    "verified": [
+      { "value": "all", "label": "All", "count": 10 },
+      { "value": "verified", "label": "Verified purchase", "count": 10 },
+      { "value": "unverified", "label": "Not verified", "count": 0 }
+    ],
+    "photos": [
+      { "value": "all", "label": "All", "count": 10 },
+      { "value": "with_photos", "label": "With photos", "count": 6 },
+      { "value": "without_photos", "label": "Without photos", "count": 4 }
+    ],
+    "language": [
+      { "value": "all", "label": "All languages", "count": 10 },
+      { "value": "en", "label": "English", "count": 10 }
+    ],
+    "sentiment": [
+      { "value": "all", "label": "All", "count": 10 },
+      { "value": "positive", "label": "Positive", "count": 9 },
+      { "value": "neutral", "label": "Neutral", "count": 1 },
+      { "value": "negative", "label": "Negative", "count": 0 }
+    ]
+  },
+  "sorting": {
+    "options": [
+      { "value": "newest", "label": "Newest" },
+      { "value": "oldest", "label": "Oldest" },
+      { "value": "highest_rating", "label": "Highest rating" },
+      { "value": "lowest_rating", "label": "Lowest rating" },
+      { "value": "most_helpful", "label": "Most helpful" },
+      { "value": "least_helpful", "label": "Least helpful" }
+    ],
+    "default": "newest"
+  },
+  "categories": [
+    {
+      "id": "positive",
+      "name": "Positive Reviews",
+      "description": "Reviews with 4-5 stars",
+      "color": "green",
+      "count": 9
+    },
+    {
+      "id": "mixed",
+      "name": "Mixed Reviews", 
+      "description": "Reviews with 3 stars",
+      "color": "yellow",
+      "count": 1
+    },
+    {
+      "id": "negative",
+      "name": "Negative Reviews",
+      "description": "Reviews with 1-2 stars", 
+      "color": "red",
+      "count": 0
+    }
+  ],
+  "trending": {
+    "tags": [
+      { "tag": "quality", "count": 6, "trend": "up" },
+      { "tag": "easy-assembly", "count": 4, "trend": "up" },
+      { "tag": "space", "count": 3, "trend": "stable" },
+      { "tag": "organization", "count": 3, "trend": "up" },
+      { "tag": "value-for-money", "count": 2, "trend": "stable" }
+    ],
+    "topics": [
+      { "topic": "Product quality", "sentiment": "very_positive", "count": 8 },
+      { "topic": "Ease of assembly", "sentiment": "positive", "count": 6 },
+      { "topic": "Space utilization", "sentiment": "positive", "count": 5 },
+      { "topic": "Delivery and packaging", "sentiment": "mixed", "count": 3 }
+    ]
+  },
+  "moderation": {
+    "guidelines": [
+      "Reviews must be related to the product",
+      "Respectful language required",
+      "No spam or promotional content",
+      "Only verified purchases can review"
+    ],
+    "autoModeration": true,
+    "humanReview": true
+  },
+  "metadata": {
+    "lastUpdated": "2025-01-03",
+    "version": "1.0.0",
+    "totalProducts": 1,
+    "dataSource": "user_reviews",
+    "qualityScore": 0.94,
+    "completenessScore": 0.87
+  }
+} 
