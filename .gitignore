@@ -89,7 +89,7 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public - Commented out because we need images in the repo
 
 # Storybook build outputs
 .out
