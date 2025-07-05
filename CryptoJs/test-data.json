@@ -1,8 +1,0 @@
-{
-  "email": "usuario@teste.com",
-  "phone": "11999999999",
-  "value": 150.99,
-  "currency": "BRL",
-  "order_id": "ORDER123",
-  "description": "Produto Teste"
-} 
