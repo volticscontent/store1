@@ -1,0 +1,11 @@
+<svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="20" cy="20" r="18" fill="#1e3a8a" stroke="#f97316" stroke-width="2"/>
+  
+  <!-- Thunder bolt -->
+  <path d="M12 8 L20 8 L16 16 L22 16 L14 32 L18 20 L12 20 Z" fill="#f97316"/>
+  
+  <!-- Team text -->
+  <text x="45" y="15" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1e3a8a">THUNDER</text>
+  <text x="45" y="28" font-family="Arial, sans-serif" font-size="8" font-weight="normal" fill="#6b7280">OKC</text>
+</svg> 

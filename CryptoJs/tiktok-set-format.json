@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "source": "shopify_webhook",
+  "tiktok_payload": {
+    "pixel_code": "{{PIXEL_CODE}}",
+    "event": "Purchase",
+    "event_id": "={{ 'order_' + $json.body[0].body[0].body.id }}",
+    "timestamp": "={{ Math.floor(new Date().getTime() / 1000).toString() }}",
+    "context": {
+      "user_agent": "Shopify-TikTok-Integration",
+      "ip": "{{IP_ADDRESS}}",
+      "user": {
+        "email": "={{ $('Crypto Hash').item.json.email_hash }}",
+        "external_id": "={{ $('Crypto Hash').item.json.email_hash.substring(0, 16) }}",
+        "phone": "={{ $('Crypto Hash').item.json.phone_hash }}"
+      },
+      "page": {
+        "url": "{{SHOPIFY_STORE_URL}}",
+        "referrer": "{{REFERRER}}"
+      }
+    },
+    "properties": {
+      "contents": [
+        {
+          "content_id": "={{ $json.body[0].body[0].body.line_items[0].product_id || 'shopify_product' }}",
+          "content_type": "product",
+          "content_name": "={{ $json.body[0].body[0].body.line_items[0].title || 'Purchase from Shopify' }}",
+          "brand": "{{SHOPIFY_STORE_NAME}}",
+          "price": "={{ parseFloat($json.body[0].body[0].body.line_items[0].price) || 0 }}",
+          "quantity": "={{ parseInt($json.body[0].body[0].body.line_items[0].quantity) || 1 }}"
+        }
+      ],
+      "currency": "={{ $json.body[0].body[0].body.currency || 'USD' }}",
+      "value": "={{ parseFloat($json.body[0].body[0].body.total_price) || 0 }}",
+      "content_type": "product",
+      "order_id": "={{ 'shopify_order_' + $json.body[0].body[0].body.id }}"
+    }
+  },
+  "shopify_data": {
+    "email": "={{ $json.body[0].body[0].body.email }}",
+    "phone": "={{ $json.body[0].body[0].body.sms_marketing_phone }}",
+    "total_value": "={{ parseFloat($json.body[0].body[0].body.total_price) || 0 }}",
+    "currency": "={{ $json.body[0].body[0].body.currency || 'USD' }}",
+    "product_name": "={{ $json.body[0].body[0].body.line_items[0].title || 'Purchase from Shopify' }}"
+  },
+  "debug_info": {
+    "email_hash": "={{ $('Crypto Hash').item.json.email_hash }}",
+    "phone_hash": "={{ $('Crypto Hash').item.json.phone_hash }}",
+    "timestamp": "={{ Math.floor(new Date().getTime() / 1000) }}"
+  }
+} 

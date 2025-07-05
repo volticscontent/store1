@@ -1,0 +1,398 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Organizador de Cozinha Multifuncional",
+      "description": "Organizador de cozinha premium com múltiplos compartimentos para utensílios, temperos e acessórios. Feito em aço inoxidável resistente com acabamento anti-ferrugem. Design moderno que combina funcionalidade e estética.",
+      "shortDescription": "Organizador premium para cozinha com design moderno",
+      "price": {
+        "current": 45.99,
+        "original": 65.99,
+        "currency": "R$",
+        "discount": 30
+      },
+      "rating": {
+        "average": 4.5,
+        "total": 1250,
+        "stars": {
+          "5": 750,
+          "4": 350,
+          "3": 100,
+          "2": 30,
+          "1": 20
+        }
+      },
+      "images": {
+        "main": "/placeholder.jpg",
+        "gallery": [
+          "/placeholder.jpg",
+          "/placeholder.svg",
+          "/public/placeholder-logo.png"
+        ],
+        "thumbnail": "/placeholder.svg"
+      },
+      "specifications": {
+        "material": "Aço Inoxidável",
+        "dimensions": "30x20x15 cm",
+        "weight": "1.2 kg",
+        "color": "Prata",
+        "warranty": "2 anos"
+      },
+      "category": "cozinha",
+      "tags": ["organizador", "cozinha", "premium", "inox"],
+      "stock": {
+        "available": true,
+        "quantity": 50,
+        "soldCount": 1250
+      },
+      "shipping": {
+        "free": true,
+        "estimatedDays": "3-5 dias úteis"
+      },
+      "featured": true,
+      "trending": false
+    },
+    {
+      "id": 2,
+      "title": "Conjunto de Potes para Despensa",
+      "description": "Set completo com 6 potes herméticos para armazenamento de cereais, grãos e alimentos secos. Tampas com sistema de vedação a vácuo mantém os alimentos frescos por mais tempo. Ideal para organizar a despensa.",
+      "shortDescription": "6 potes herméticos para despensa com vedação a vácuo",
+      "price": {
+        "current": 32.99,
+        "original": 49.99,
+        "currency": "R$",
+        "discount": 34
+      },
+      "rating": {
+        "average": 4.3,
+        "total": 890,
+        "stars": {
+          "5": 450,
+          "4": 300,
+          "3": 100,
+          "2": 25,
+          "1": 15
+        }
+      },
+      "images": {
+        "main": "/placeholder.svg",
+        "gallery": [
+          "/placeholder.svg",
+          "/placeholder.jpg",
+          "/public/placeholder-user.jpg"
+        ],
+        "thumbnail": "/placeholder.svg"
+      },
+      "specifications": {
+        "material": "Plástico BPA Free",
+        "dimensions": "Vários tamanhos",
+        "weight": "2.1 kg",
+        "color": "Transparente",
+        "warranty": "1 ano"
+      },
+      "category": "armazenamento",
+      "tags": ["potes", "despensa", "hermético", "conjunto"],
+      "stock": {
+        "available": true,
+        "quantity": 35,
+        "soldCount": 890
+      },
+      "shipping": {
+        "free": true,
+        "estimatedDays": "2-4 dias úteis"
+      },
+      "featured": false,
+      "trending": true
+    },
+    {
+      "id": 3,
+      "title": "Prateleira Giratória para Temperos",
+      "description": "Prateleira giratória de 360° para organizar temperos e condimentos. Base antiderrapante e compartimentos ajustáveis. Ocupa pouco espaço no armário e facilita o acesso a todos os itens.",
+      "shortDescription": "Prateleira giratória 360° para temperos",
+      "price": {
+        "current": 28.99,
+        "original": 39.99,
+        "currency": "R$",
+        "discount": 28
+      },
+      "rating": {
+        "average": 4.7,
+        "total": 2100,
+        "stars": {
+          "5": 1400,
+          "4": 500,
+          "3": 150,
+          "2": 30,
+          "1": 20
+        }
+      },
+      "images": {
+        "main": "/public/temu-logo.png",
+        "gallery": [
+          "/public/temu-logo.png",
+          "/placeholder.jpg",
+          "/placeholder.svg"
+        ],
+        "thumbnail": "/public/temu-logo.png"
+      },
+      "specifications": {
+        "material": "Plástico ABS",
+        "dimensions": "25x25x20 cm",
+        "weight": "0.8 kg",
+        "color": "Branco",
+        "warranty": "1 ano"
+      },
+      "category": "organizacao",
+      "tags": ["giratória", "temperos", "360", "compacta"],
+      "stock": {
+        "available": true,
+        "quantity": 75,
+        "soldCount": 2100
+      },
+      "shipping": {
+        "free": false,
+        "cost": 8.99,
+        "estimatedDays": "3-6 dias úteis"
+      },
+      "featured": true,
+      "trending": true
+    },
+    {
+      "id": 4,
+      "title": "Organizador de Armário Extensível",
+      "description": "Organizador extensível que se adapta a diferentes tamanhos de armários. Sistema modular com prateleiras ajustáveis e gavetas removíveis. Maximiza o espaço de armazenamento vertical.",
+      "shortDescription": "Organizador extensível para armários com sistema modular",
+      "price": {
+        "current": 52.99,
+        "original": 79.99,
+        "currency": "R$",
+        "discount": 34
+      },
+      "rating": {
+        "average": 4.6,
+        "total": 650,
+        "stars": {
+          "5": 400,
+          "4": 180,
+          "3": 50,
+          "2": 15,
+          "1": 5
+        }
+      },
+      "images": {
+        "main": "/placeholder.jpg",
+        "gallery": [
+          "/placeholder.jpg",
+          "/public/placeholder-logo.svg",
+          "/placeholder.svg"
+        ],
+        "thumbnail": "/placeholder.jpg"
+      },
+      "specifications": {
+        "material": "MDF e Metal",
+        "dimensions": "40-80x30x25 cm",
+        "weight": "3.5 kg",
+        "color": "Madeira Clara",
+        "warranty": "2 anos"
+      },
+      "category": "armario",
+      "tags": ["extensível", "modular", "armário", "gavetas"],
+      "stock": {
+        "available": true,
+        "quantity": 20,
+        "soldCount": 650
+      },
+      "shipping": {
+        "free": true,
+        "estimatedDays": "5-7 dias úteis"
+      },
+      "featured": false,
+      "trending": false
+    },
+    {
+      "id": 5,
+      "title": "Estante de Múltiplos Níveis Premium",
+      "description": "Estante robusta com 5 níveis ajustáveis, ideal para despensa, garagem ou escritório. Suporta até 50kg por prateleira. Montagem fácil sem necessidade de ferramentas especiais.",
+      "shortDescription": "Estante 5 níveis suporta até 50kg por prateleira",
+      "price": {
+        "current": 67.99,
+        "original": 89.99,
+        "currency": "R$",
+        "discount": 24
+      },
+      "rating": {
+        "average": 4.4,
+        "total": 780,
+        "stars": {
+          "5": 400,
+          "4": 250,
+          "3": 90,
+          "2": 25,
+          "1": 15
+        }
+      },
+      "images": {
+        "main": "/public/placeholder-logo.png",
+        "gallery": [
+          "/public/placeholder-logo.png",
+          "/placeholder.svg",
+          "/placeholder.jpg"
+        ],
+        "thumbnail": "/public/placeholder-logo.png"
+      },
+      "specifications": {
+        "material": "Aço Galvanizado",
+        "dimensions": "180x90x40 cm",
+        "weight": "15 kg",
+        "color": "Cinza Metálico",
+        "warranty": "3 anos"
+      },
+      "category": "estante",
+      "tags": ["resistente", "5-níveis", "industrial", "ajustável"],
+      "stock": {
+        "available": true,
+        "quantity": 12,
+        "soldCount": 780
+      },
+      "shipping": {
+        "free": true,
+        "estimatedDays": "7-10 dias úteis"
+      },
+      "featured": true,
+      "trending": false
+    },
+    {
+      "id": 6,
+      "title": "Solução de Canto Inteligente",
+      "description": "Aproveite cantos mortos com este organizador inteligente. Design triangular se encaixa perfeitamente em cantos, com 3 prateleiras giratórias para fácil acesso.",
+      "shortDescription": "Organizador triangular para cantos com prateleiras giratórias",
+      "price": {
+        "current": 38.99,
+        "original": 55.99,
+        "currency": "R$",
+        "discount": 30
+      },
+      "rating": {
+        "average": 4.6,
+        "total": 1100,
+        "stars": {
+          "5": 650,
+          "4": 320,
+          "3": 90,
+          "2": 25,
+          "1": 15
+        }
+      },
+      "images": {
+        "main": "/placeholder.svg",
+        "gallery": [
+          "/placeholder.svg",
+          "/public/placeholder-user.jpg",
+          "/placeholder.jpg"
+        ],
+        "thumbnail": "/placeholder.svg"
+      },
+      "specifications": {
+        "material": "Plástico Resistente",
+        "dimensions": "35x35x45 cm",
+        "weight": "1.8 kg",
+        "color": "Branco",
+        "warranty": "2 anos"
+      },
+      "category": "canto",
+      "tags": ["canto", "giratório", "inteligente", "triangular"],
+      "stock": {
+        "available": true,
+        "quantity": 40,
+        "soldCount": 1100
+      },
+      "shipping": {
+        "free": true,
+        "estimatedDays": "3-5 dias úteis"
+      },
+      "featured": false,
+      "trending": true
+    }
+  ],
+  "categories": [
+    {
+      "id": "cozinha",
+      "name": "Cozinha",
+      "description": "Organizadores e acessórios para cozinha",
+      "icon": "chef-hat",
+      "color": "#FF6B35"
+    },
+    {
+      "id": "armazenamento",
+      "name": "Armazenamento",
+      "description": "Soluções para armazenar e organizar",
+      "icon": "archive",
+      "color": "#4ECDC4"
+    },
+    {
+      "id": "organizacao",
+      "name": "Organização",
+      "description": "Produtos para manter tudo organizado",
+      "icon": "grid",
+      "color": "#45B7D1"
+    },
+    {
+      "id": "armario",
+      "name": "Armário",
+      "description": "Organizadores para armários e closets",
+      "icon": "cabinet",
+      "color": "#96CEB4"
+    },
+    {
+      "id": "estante",
+      "name": "Estantes",
+      "description": "Estantes e prateleiras resistentes",
+      "icon": "shelf",
+      "color": "#FFEAA7"
+    },
+    {
+      "id": "canto",
+      "name": "Cantos",
+      "description": "Soluções para cantos e espaços pequenos",
+      "icon": "corner",
+      "color": "#DDA0DD"
+    }
+  ],
+  "filters": {
+    "priceRanges": [
+      {"min": 0, "max": 30, "label": "Até R$ 30"},
+      {"min": 30, "max": 50, "label": "R$ 30 - R$ 50"},
+      {"min": 50, "max": 80, "label": "R$ 50 - R$ 80"},
+      {"min": 80, "max": 999, "label": "Acima de R$ 80"}
+    ],
+    "ratings": [
+      {"min": 4.5, "label": "4.5+ estrelas"},
+      {"min": 4.0, "label": "4.0+ estrelas"},
+      {"min": 3.5, "label": "3.5+ estrelas"},
+      {"min": 3.0, "label": "3.0+ estrelas"}
+    ],
+    "availability": [
+      {"value": "inStock", "label": "Em estoque"},
+      {"value": "freeShipping", "label": "Frete grátis"},
+      {"value": "featured", "label": "Em destaque"},
+      {"value": "trending", "label": "Em alta"}
+    ]
+  },
+  "settings": {
+    "currency": "R$",
+    "language": "pt-BR",
+    "itemsPerPage": 12,
+    "enableFilters": true,
+    "enableSearch": true,
+    "enableWishlist": true,
+    "enableQuickView": true
+  },
+  "metadata": {
+    "lastUpdated": "2025-01-03",
+    "version": "2.0.0",
+    "totalProducts": 6,
+    "totalCategories": 6,
+    "averageRating": 4.5,
+    "totalReviews": 6770
+  }
+} 
