@@ -6,22 +6,31 @@ import { ShoppingCart, Plus, Minus } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { trackAllInitiateCheckout } from './tracking-pixels'
 
-// Declaração global para TypeScript
+// Global declaration for TypeScript
 declare global {
   interface Window {
     ShopifyBuy: any
   }
 }
 
-// Cache global para evitar recarregar o SDK
+// Global cache to avoid reloading the SDK
 let shopifySDKPromise: Promise<any> | null = null
 let shopifySDKLoaded = false
 
 interface BuyButtonProps {
+  domain: string
+  storefrontAccessToken: string
+  productId: string
   productName: string
   productPrice: number
-  productImage?: string
-  onAddToCart?: (quantity: number) => void
+  productImage: string
+  onAddToCart: (quantity: number) => void
+}
+
+interface SimpleBuyButtonProps {
+  productName: string
+  productPrice: number
+  productImage: string
 }
 
 interface ShopifyBuyButtonProps {
@@ -34,7 +43,7 @@ interface ShopifyBuyButtonProps {
   onAddToCart?: (quantity: number) => void
 }
 
-// Função para verificar se o SDK está pronto
+// Function to check if the SDK is ready
 const isShopifySDKReady = (): boolean => {
   return !!(
     window.ShopifyBuy &&
@@ -42,7 +51,7 @@ const isShopifySDKReady = (): boolean => {
   )
 }
 
-// Função para carregar o SDK v3.0 do Shopify
+// Function to load Shopify SDK v3.0
 const loadShopifySDK = (): Promise<any> => {
   if (shopifySDKLoaded && isShopifySDKReady()) {
     return Promise.resolve(window.ShopifyBuy)
@@ -53,7 +62,7 @@ const loadShopifySDK = (): Promise<any> => {
   }
 
   shopifySDKPromise = new Promise((resolve, reject) => {
-    // Verificar se já está carregado
+    // Check if it's already loaded
     if (isShopifySDKReady()) {
       shopifySDKLoaded = true
       resolve(window.ShopifyBuy)
@@ -61,14 +70,14 @@ const loadShopifySDK = (): Promise<any> => {
     }
 
     const script = document.createElement('script')
-    // Usar a versão 3.0 do JS Buy SDK
+    // Use JS Buy SDK version 3.0
     script.src = 'https://sdks.shopifycdn.com/js-buy-sdk/v3/latest/index.umd.min.js'
     script.async = true
     
     script.onload = () => {
-      // Aguardar e verificar se o SDK está pronto
+      // Wait and check if the SDK is ready
       let attempts = 0
-      const maxAttempts = 30 // 3 segundos máximo
+      const maxAttempts = 30 // 3 seconds maximum
       
       const checkSDK = () => {
         attempts++
@@ -77,7 +86,7 @@ const loadShopifySDK = (): Promise<any> => {
           shopifySDKLoaded = true
           resolve(window.ShopifyBuy)
         } else if (attempts >= maxAttempts) {
-          reject(new Error('SDK do Shopify não inicializou após 3 segundos'))
+          reject(new Error('Shopify SDK did not initialize after 3 seconds'))
         } else {
           setTimeout(checkSDK, 100)
         }
@@ -88,7 +97,7 @@ const loadShopifySDK = (): Promise<any> => {
     
     script.onerror = () => {
       shopifySDKPromise = null
-      reject(new Error('Falha ao carregar o SDK do Shopify'))
+      reject(new Error('Failed to load Shopify SDK'))
     }
     
     document.head.appendChild(script)
@@ -97,39 +106,398 @@ const loadShopifySDK = (): Promise<any> => {
   return shopifySDKPromise
 }
 
-// Função para fazer queries GraphQL no Shopify Storefront API
-const shopifyStorefrontQuery = async (
-  domain: string,
-  storefrontAccessToken: string,
-  query: string,
-  variables?: any
-) => {
-  const response = await fetch(`https://${domain}/api/2024-01/graphql.json`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-  })
+// Função principal para queries do Shopify Storefront
+async function shopifyStorefrontQuery(query: string, variables: any, storefrontAccessToken: string, domain: string) {
+  try {
+    const response = await fetch(`https://${domain}/api/2024-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      },
+      body: JSON.stringify({ query, variables }),
+    })
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data = await response.json()
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors)
+      throw new Error(`GraphQL error: ${data.errors[0].message}`)
+    }
+
+    return data.data
+  } catch (error) {
+    console.error('Shopify Storefront API error:', error)
+    throw error
   }
-
-  const data = await response.json()
-  
-  if (data.errors) {
-    throw new Error(`GraphQL error: ${data.errors[0].message}`)
-  }
-
-  return data.data
 }
 
-export function BuyButton({ productName, productPrice, productImage }: BuyButtonProps) {
+// Function to test and get all available variants from a product
+async function testProductVariants(productId: string, storefrontAccessToken: string, shop: string) {
+  console.log(`Testing product variants for product ID: ${productId}`);
+  
+  const query = `
+    query GetProductVariants($id: ID!) {
+      node(id: $id) {
+        ... on Product {
+          id
+          title
+          handle
+          variants(first: 50) {
+            nodes {
+              id
+              title
+              availableForSale
+              price {
+                amount
+                currencyCode
+              }
+              selectedOptions {
+                name
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(`https://${shop}/api/2025-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      },
+      body: JSON.stringify({
+        query,
+        variables: { id: productId }
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+      return null;
+    }
+
+    if (data.data?.node?.variants) {
+      console.log('Available variants:', data.data.node.variants.nodes);
+      return data.data.node.variants.nodes;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error testing product variants:', error);
+    return null;
+  }
+}
+
+// Function to get product variants by handle (easier to use)
+async function getProductVariantsByHandle(handle: string, storefrontAccessToken: string, shop: string) {
+  console.log(`Getting product variants for handle: ${handle}`);
+  
+  const query = `
+    query GetProductByHandle($handle: String!) {
+      product(handle: $handle) {
+        id
+        title
+        handle
+        variants(first: 50) {
+          nodes {
+            id
+            title
+            availableForSale
+            price {
+              amount
+              currencyCode
+            }
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(`https://${shop}/api/2025-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      },
+      body: JSON.stringify({
+        query,
+        variables: { handle }
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+      return null;
+    }
+
+    if (data.data?.product?.variants) {
+      console.log('Product:', data.data.product.title);
+      console.log('Available variants:', data.data.product.variants.nodes);
+      
+      // Log each variant with its ID for easy copying
+      data.data.product.variants.nodes.forEach((variant: any, index: number) => {
+        console.log(`Variant ${index + 1}:`, {
+          id: variant.id,
+          title: variant.title,
+          availableForSale: variant.availableForSale,
+          price: variant.price.amount,
+          options: variant.selectedOptions
+        });
+      });
+      
+      return data.data.product.variants.nodes;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error getting product variants:', error);
+    return null;
+  }
+}
+
+// Function to list all available products in the store
+async function listAllProducts(storefrontAccessToken: string, shop: string) {
+  console.log('Listing all products in the store...');
+  
+  const query = `
+    query GetAllProducts {
+      products(first: 50) {
+        nodes {
+          id
+          title
+          handle
+          availableForSale
+          variants(first: 10) {
+            nodes {
+              id
+              title
+              availableForSale
+              price {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(`https://${shop}/api/2025-01/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      },
+      body: JSON.stringify({ query })
+    });
+
+    const data = await response.json();
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+      return null;
+    }
+
+    if (data.data?.products?.nodes) {
+      console.log('=== ALL PRODUCTS IN STORE ===');
+      data.data.products.nodes.forEach((product: any, index: number) => {
+        console.log(`Product ${index + 1}:`, {
+          id: product.id,
+          title: product.title,
+          handle: product.handle,
+          availableForSale: product.availableForSale,
+          variantCount: product.variants.nodes.length
+        });
+        
+        // Log variants for each product
+        product.variants.nodes.forEach((variant: any, vIndex: number) => {
+          console.log(`  Variant ${vIndex + 1}:`, {
+            id: variant.id,
+            title: variant.title,
+            availableForSale: variant.availableForSale,
+            price: variant.price.amount
+          });
+        });
+      });
+      
+      return data.data.products.nodes;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error listing products:', error);
+    return null;
+  }
+}
+
+// Função melhorada para testar o token
+async function testStorefrontToken(storefrontAccessToken: string, domain: string) {
+  try {
+    console.log('🔍 Testando token do Storefront Access...')
+    console.log('Token:', storefrontAccessToken)
+    console.log('Domain:', domain)
+    
+    // Teste simples primeiro - apenas shop info
+    const simpleQuery = `
+      query {
+        shop {
+          name
+        }
+      }
+    `
+
+    // Tentar diferentes versões da API
+    const apiVersions = ['2024-01', '2023-10', '2023-07', '2023-04']
+    
+    for (const version of apiVersions) {
+      console.log(`🔄 Testando API versão ${version}...`)
+      
+      const response = await fetch(`https://${domain}/api/${version}/graphql.json`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+        },
+        body: JSON.stringify({ query: simpleQuery }),
+      })
+
+      console.log(`📊 Resposta da API ${version}:`, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        
+        if (data.errors) {
+          console.error(`❌ Erros GraphQL na versão ${version}:`, data.errors)
+          continue
+        }
+
+        console.log(`✅ Token funcionando na versão ${version}!`)
+        console.log('🏪 Dados da loja:', data.data.shop)
+        
+        // Agora tenta buscar produtos
+        await testProductsQuery(storefrontAccessToken, domain, version)
+        return
+      } else {
+        console.error(`❌ Erro na versão ${version}:`, response.status, response.statusText)
+        
+        // Tenta ler o corpo da resposta para mais detalhes
+        try {
+          const errorText = await response.text()
+          console.error(`📄 Detalhes do erro:`, errorText)
+        } catch (e) {
+          console.error('Não foi possível ler o corpo da resposta')
+        }
+      }
+    }
+    
+    console.error('❌ Nenhuma versão da API funcionou')
+    
+  } catch (error) {
+    console.error('❌ Erro ao testar token:', error)
+  }
+}
+
+// Função para testar busca de produtos
+async function testProductsQuery(storefrontAccessToken: string, domain: string, apiVersion: string) {
+  try {
+    console.log(`🛍️ Testando busca de produtos na versão ${apiVersion}...`)
+    
+    const productsQuery = `
+      query {
+        products(first: 3) {
+          edges {
+            node {
+              id
+              title
+              handle
+              variants(first: 5) {
+                edges {
+                  node {
+                    id
+                    title
+                    availableForSale
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+
+    const response = await fetch(`https://${domain}/api/${apiVersion}/graphql.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+      },
+      body: JSON.stringify({ query: productsQuery }),
+    })
+
+    if (!response.ok) {
+      console.error('❌ Erro ao buscar produtos:', response.status, response.statusText)
+      return
+    }
+
+    const data = await response.json()
+    
+    if (data.errors) {
+      console.error('❌ Erros GraphQL ao buscar produtos:', data.errors)
+      return
+    }
+
+    console.log('✅ Produtos encontrados:', data.data.products.edges.length)
+    
+    data.data.products.edges.forEach((product: any, index: number) => {
+      console.log(`\n📦 Produto ${index + 1}:`)
+      console.log(`- ID: ${product.node.id}`)
+      console.log(`- Título: ${product.node.title}`)
+      console.log(`- Handle: ${product.node.handle}`)
+      console.log(`- Variantes: ${product.node.variants.edges.length}`)
+      
+      product.node.variants.edges.forEach((variant: any, vIndex: number) => {
+        console.log(`  📝 Variante ${vIndex + 1}:`)
+        console.log(`    - ID: ${variant.node.id}`)
+        console.log(`    - Título: ${variant.node.title}`)
+        console.log(`    - Disponível: ${variant.node.availableForSale}`)
+        console.log(`    - Preço: ${variant.node.price.amount} ${variant.node.price.currencyCode}`)
+      })
+    })
+    
+  } catch (error) {
+    console.error('❌ Erro ao testar busca de produtos:', error)
+  }
+}
+
+export function BuyButton({ productName, productPrice, productImage }: SimpleBuyButtonProps) {
   const [quantity, setQuantity] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
@@ -137,7 +505,7 @@ export function BuyButton({ productName, productPrice, productImage }: BuyButton
   const handleBuyNow = async () => {
     setIsLoading(true)
     try {
-      // Disparar evento InitiateCheckout nos pixels
+      // Trigger InitiateCheckout event on pixels
       const totalValue = productPrice * quantity
       trackAllInitiateCheckout(totalValue, 'BRL')
       
@@ -214,239 +582,44 @@ export function ShopifyBuyButton({
   productId,
   productName,
   productPrice,
-  productImage
-}: ShopifyBuyButtonProps) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
-  const [variantId, setVariantId] = useState<string | null>(null)
-  const { toast } = useToast()
+  productImage,
+  onAddToCart,
+}: BuyButtonProps) {
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Buscar produto e suas variantes primeiro
-  const fetchProduct = useCallback(async () => {
-    try {
-      console.log('Buscando produto:', productId)
-
-      const PRODUCT_QUERY = `
-        query getProduct($id: ID!) {
-          product(id: $id) {
-            id
-            title
-            handle
-            availableForSale
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  availableForSale
-                  priceV2 {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
-          }
-        }
-      `
-
-      const variables = {
-        id: `gid://shopify/Product/${productId}`,
-      }
-
-      const data = await shopifyStorefrontQuery(
-        domain,
-        storefrontAccessToken,
-        PRODUCT_QUERY,
-        variables
-      )
-
-      if (!data.product) {
-        throw new Error('Produto não encontrado')
-      }
-
-      if (!data.product.availableForSale) {
-        throw new Error('Produto não disponível para venda')
-      }
-
-      const availableVariants = data.product.variants.edges.filter(
-        (edge: any) => edge.node.availableForSale
-      )
-
-      if (availableVariants.length === 0) {
-        throw new Error('Nenhuma variante disponível para venda')
-      }
-
-      // Pegar a primeira variante disponível
-      const firstVariant = availableVariants[0].node
-      setVariantId(firstVariant.id)
-
-      console.log('Produto encontrado:', data.product.title)
-      console.log('Variante disponível:', firstVariant.id)
-
-      return firstVariant.id
-
-    } catch (err) {
-      console.error('Erro ao buscar produto:', err)
-      throw err
+  // Teste simples do token
+  useEffect(() => {
+    if (domain && storefrontAccessToken) {
+      testStorefrontToken(storefrontAccessToken, domain)
     }
-  }, [domain, storefrontAccessToken, productId])
+  }, [domain, storefrontAccessToken])
 
-  // Criar checkout usando Storefront API
-  const createCheckout = useCallback(async () => {
+  const handleBuyNow = useCallback(async () => {
+    setIsLoading(true)
     try {
-      setIsLoading(true)
-      setError(null)
-
-      console.log('Iniciando processo de checkout...')
-
-      // Primeiro buscar o produto e variante
-      const availableVariantId = await fetchProduct()
-
-      if (!availableVariantId) {
-        throw new Error('Nenhuma variante disponível')
-      }
-
-      console.log('Criando checkout com variante:', availableVariantId)
-
-      const CREATE_CHECKOUT_MUTATION = `
-        mutation checkoutCreate($input: CheckoutCreateInput!) {
-          checkoutCreate(input: $input) {
-            checkout {
-              id
-              webUrl
-              lineItems(first: 5) {
-                edges {
-                  node {
-                    id
-                    title
-                    quantity
-                  }
-                }
-              }
-            }
-            checkoutUserErrors {
-              field
-              message
-            }
-          }
-        }
-      `
-
-      const variables = {
-        input: {
-          lineItems: [
-            {
-              variantId: availableVariantId,
-              quantity: 1,
-            },
-          ],
-        },
-      }
-
-      const data = await shopifyStorefrontQuery(
-        domain,
-        storefrontAccessToken,
-        CREATE_CHECKOUT_MUTATION,
-        variables
-      )
-
-      if (data.checkoutCreate.checkoutUserErrors.length > 0) {
-        throw new Error(data.checkoutCreate.checkoutUserErrors[0].message)
-      }
-
-      const checkout = data.checkoutCreate.checkout
-      setCheckoutUrl(checkout.webUrl)
-
-      console.log('Checkout criado com sucesso!')
+      // Usar o cart URL diretamente já que os IDs estão corretos
+      const cartUrl = `https://${domain}/cart/${productId}:1?channel=buy_button`
+      console.log('🛒 Abrindo cart:', cartUrl)
+      console.log('📦 Produto:', productName)
+      console.log('💰 Preço:', productPrice)
       
-    } catch (err) {
-      console.error('Erro ao criar checkout:', err)
-      setError(`Erro ao conectar com Shopify: ${err instanceof Error ? err.message : 'Erro desconhecido'}`)
+      window.open(cartUrl, '_blank')
+      onAddToCart?.(1)
+    } catch (error) {
+      console.error('Error in buy now:', error)
     } finally {
       setIsLoading(false)
     }
-  }, [domain, storefrontAccessToken, fetchProduct])
-
-  useEffect(() => {
-    createCheckout()
-  }, [createCheckout])
-
-  // Função para comprar agora
-  const handleBuyNow = async () => {
-    if (!checkoutUrl) {
-      console.error('URL do checkout não disponível')
-      toast({
-        title: "Error",
-        description: "Checkout not ready. Please try again.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    try {
-      console.log('Redirecionando para checkout:', checkoutUrl)
-
-      // Disparar evento InitiateCheckout nos pixels
-      trackAllInitiateCheckout(productPrice, 'BRL')
-
-      // Redirecionar para checkout
-      window.open(checkoutUrl, '_blank')
-
-      toast({
-        title: "Redirecting!",
-        description: `Opening checkout for ${productName}.`,
-      })
-
-    } catch (err) {
-      console.error('Erro ao redirecionar:', err)
-      toast({
-        title: "Error",
-        description: "Unable to open checkout.",
-        variant: "destructive",
-      })
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="w-full max-w-md mx-auto">
-        <div className="flex items-center justify-center py-4">
-          <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
-          <span className="ml-2 text-gray-600">Preparing checkout...</span>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="w-full max-w-md mx-auto">
-        <div className="text-center py-4">
-          <p className="text-red-600 mb-4 text-sm">{error}</p>
-          <p className="text-gray-600 mb-4 text-sm">Using alternative button:</p>
-          <BuyButton
-            productName={productName}
-            productPrice={productPrice}
-            productImage={productImage}
-          />
-        </div>
-      </div>
-    )
-  }
+  }, [domain, productId, productName, productPrice, onAddToCart])
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <Button
+      <Button 
         onClick={handleBuyNow}
         disabled={isLoading}
-        className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 text-lg font-semibold"
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg disabled:opacity-50"
       >
-        <div className="flex items-center gap-2">
-          <ShoppingCart className="h-5 w-5" />
-          Buy Now
-        </div>
+        {isLoading ? 'Processing...' : `Buy Now - $${productPrice}`}
       </Button>
     </div>
   )
@@ -458,217 +631,36 @@ export function ShopifyBuyButtonCompact({
   productId,
   productName,
   productPrice,
-  productImage
-}: ShopifyBuyButtonProps) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
-  const [variantId, setVariantId] = useState<string | null>(null)
-  const { toast } = useToast()
+  productImage,
+  onAddToCart,
+}: BuyButtonProps) {
+  const [isLoading, setIsLoading] = useState(false)
 
-  // Buscar produto e suas variantes primeiro
-  const fetchProduct = useCallback(async () => {
+  const handleBuyNow = useCallback(async () => {
+    setIsLoading(true)
     try {
-      const PRODUCT_QUERY = `
-        query getProduct($id: ID!) {
-          product(id: $id) {
-            id
-            title
-            handle
-            availableForSale
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  title
-                  availableForSale
-                  priceV2 {
-                    amount
-                    currencyCode
-                  }
-                }
-              }
-            }
-          }
-        }
-      `
-
-      const variables = {
-        id: `gid://shopify/Product/${productId}`,
-      }
-
-      const data = await shopifyStorefrontQuery(
-        domain,
-        storefrontAccessToken,
-        PRODUCT_QUERY,
-        variables
-      )
-
-      if (!data.product) {
-        throw new Error('Produto não encontrado')
-      }
-
-      if (!data.product.availableForSale) {
-        throw new Error('Produto não disponível para venda')
-      }
-
-      const availableVariants = data.product.variants.edges.filter(
-        (edge: any) => edge.node.availableForSale
-      )
-
-      if (availableVariants.length === 0) {
-        throw new Error('Nenhuma variante disponível para venda')
-      }
-
-      // Pegar a primeira variante disponível
-      const firstVariant = availableVariants[0].node
-      setVariantId(firstVariant.id)
-
-      return firstVariant.id
-
-    } catch (err) {
-      console.error('Erro ao buscar produto compacto:', err)
-      throw err
-    }
-  }, [domain, storefrontAccessToken, productId])
-
-  // Criar checkout usando Storefront API
-  const createCheckout = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
-      // Primeiro buscar o produto e variante
-      const availableVariantId = await fetchProduct()
-
-      if (!availableVariantId) {
-        throw new Error('Nenhuma variante disponível')
-      }
-
-      const CREATE_CHECKOUT_MUTATION = `
-        mutation checkoutCreate($input: CheckoutCreateInput!) {
-          checkoutCreate(input: $input) {
-            checkout {
-              id
-              webUrl
-              lineItems(first: 5) {
-                edges {
-                  node {
-                    id
-                    title
-                    quantity
-                  }
-                }
-              }
-            }
-            checkoutUserErrors {
-              field
-              message
-            }
-          }
-        }
-      `
-
-      const variables = {
-        input: {
-          lineItems: [
-            {
-              variantId: availableVariantId,
-              quantity: 1,
-            },
-          ],
-        },
-      }
-
-      const data = await shopifyStorefrontQuery(
-        domain,
-        storefrontAccessToken,
-        CREATE_CHECKOUT_MUTATION,
-        variables
-      )
-
-      if (data.checkoutCreate.checkoutUserErrors.length > 0) {
-        throw new Error(data.checkoutCreate.checkoutUserErrors[0].message)
-      }
-
-      const checkout = data.checkoutCreate.checkout
-      setCheckoutUrl(checkout.webUrl)
+      // Usar o cart URL diretamente já que os IDs estão corretos
+      const cartUrl = `https://${domain}/cart/${productId}:1?channel=buy_button`
+      console.log('🛒 [COMPACT] Abrindo cart:', cartUrl)
+      console.log('📦 [COMPACT] Produto:', productName)
+      console.log('💰 [COMPACT] Preço:', productPrice)
       
-    } catch (err) {
-      console.error('Erro ao criar checkout compacto:', err)
-      setError('Erro ao conectar com Shopify')
+      window.open(cartUrl, '_blank')
+      onAddToCart?.(1)
+    } catch (error) {
+      console.error('Error in compact buy now:', error)
     } finally {
       setIsLoading(false)
     }
-  }, [domain, storefrontAccessToken, fetchProduct])
-
-  useEffect(() => {
-    createCheckout()
-  }, [createCheckout])
-
-  // Função para comprar agora
-  const handleBuyNow = async () => {
-    if (!checkoutUrl) {
-      console.error('URL do checkout não disponível')
-      return
-    }
-
-    try {
-      // Disparar evento InitiateCheckout nos pixels
-      trackAllInitiateCheckout(productPrice, 'BRL')
-
-      window.open(checkoutUrl, '_blank')
-
-      toast({
-        title: "Redirecting!",
-        description: `Opening checkout for ${productName}.`,
-      })
-
-    } catch (err) {
-      console.error('Erro ao redirecionar:', err)
-      toast({
-        title: "Error",
-        description: "Unable to open checkout.",
-        variant: "destructive",
-      })
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <Button disabled className="bg-orange-500 hover:bg-orange-600 text-white">
-        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-        Loading...
-      </Button>
-    )
-  }
-
-  if (error) {
-    return (
-      <Button 
-        onClick={() => {
-          toast({
-            title: "Error",
-            description: "Unable to process purchase.",
-            variant: "destructive",
-          })
-        }}
-        className="bg-orange-500 hover:bg-orange-600 text-white"
-      >
-        <ShoppingCart className="h-4 w-4 mr-2" />
-        Buy
-      </Button>
-    )
-  }
+  }, [domain, productId, productName, productPrice, onAddToCart])
 
   return (
-    <Button
+    <Button 
       onClick={handleBuyNow}
       disabled={isLoading}
-      className="bg-orange-500 hover:bg-orange-600 text-white"
+      className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
     >
-      <ShoppingCart className="h-4 w-4 mr-2" />
-      Buy
+      {isLoading ? 'Processing...' : `Buy $${productPrice}`}
     </Button>
   )
 } 

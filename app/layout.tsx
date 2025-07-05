@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import TrackingPixels from "@/components/tracking-pixels"
 
 export const metadata: Metadata = {
-  title: 'v0 App',
+  title: 'Temu',
   description: 'Created with v0',
   generator: 'v0.dev',
 }

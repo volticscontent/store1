@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Star, Heart, ShoppingCart } from "lucide-react"
+import { Star, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Review } from "@/hooks/useReviews"
 
@@ -184,9 +184,6 @@ export default function ProductDetails({
               <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3">
                 <ShoppingCart className="h-5 w-5 mr-2" />
                 Add to Cart
-              </Button>
-              <Button variant="outline" size="icon" className="px-4">
-                <Heart className="h-5 w-5" />
               </Button>
             </div>
             <p className="text-xs text-gray-500 text-center">

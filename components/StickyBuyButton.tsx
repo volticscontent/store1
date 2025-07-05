@@ -1,95 +1,176 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { ShoppingCart, Heart, Minus, Plus } from "lucide-react"
+import { ShoppingCart, ChevronUp, ChevronDown } from "lucide-react"
 import { ShopifyBuyButtonCompact } from "@/components/buy-button"
 
 interface StickyBuyButtonProps {
   price?: string
   originalPrice?: string
   discount?: number
+  productId?: string
+  productName?: string
+  productImage?: string
   onAddToCart?: (quantity: number) => void
-  onToggleWishlist?: () => void
   cartItems?: number
-  isWishlisted?: boolean
+  selectedVariant?: string
+  onVariantChange?: (variantId: string) => void
+  selectedBundle?: string
+  onBundleChange?: (bundleId: string) => void
 }
 
 export default function StickyBuyButton({
-  price = "$73.57",
-  originalPrice = "$125.99",
-  discount = 42,
+  price = "$49.00",
+  originalPrice = "$120.00",
+  discount = 59,
+  productId = "49921179386142",
+  productName = "Mystery Box Fragrance",
+  productImage = "/Caixa 3 perfumes home.png",
   onAddToCart,
-  onToggleWishlist,
   cartItems = 0,
-  isWishlisted = false
+  selectedVariant = "Female",
+  onVariantChange,
+  selectedBundle = "1-3-units",
+  onBundleChange
 }: StickyBuyButtonProps) {
-  const [quantity, setQuantity] = useState(1)
+  const [showDropdown, setShowDropdown] = useState(false)
   const [showCart, setShowCart] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const handleAddToCart = () => {
+  // Opções de bundles com preços
+  const bundleOptions = [
+    {
+      id: "1-3-units",
+      title: "1-3 Units",
+      price: 49.00,
+      originalPrice: 120.00,
+      discount: 59
+    },
+    {
+      id: "4-6-units", 
+      title: "4-6 Units",
+      price: 59.00,
+      originalPrice: 299.00,
+      discount: 80
+    },
+    {
+      id: "7-10-units",
+      title: "7-10 Units", 
+      price: 79.00,
+      originalPrice: 349.00,
+      discount: 77
+    }
+  ]
+
+  // Variantes de gênero
+  const variants = ["Female", "Male", "Unisex"]
+
+  // Fechar quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false)
+      }
+    }
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showDropdown])
+
+  const handleAddToCart = (quantity: number) => {
     onAddToCart?.(quantity)
     setShowCart(true)
-    setTimeout(() => setShowCart(false), 2000) // Hide after 2 seconds
+    setTimeout(() => setShowCart(false), 2000)
   }
 
-  const CartIcon = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 1024 1024" className={className} fill="currentColor">
-      <path d="M384 775.3c30.3 0 54.9 24.6 54.9 54.9 0 30.3-24.6 54.9-54.9 54.8-30.3 0-54.9-24.6-54.9-54.8 0-30.3 24.6-54.9 54.9-54.9z m365.7 0c30.3 0 54.9 24.6 54.9 54.9 0 30.3-24.6 54.9-54.9 54.8-30.3 0-54.9-24.6-54.8-54.8 0-30.3 24.6-54.9 54.8-54.9z m-636.9-636.8l4.1 0.5 83.3 16c43.5 8.4 77.2 42.8 84.6 86.5l3 18.1 454.4 0.1c80.8 0 146.3 65.5 146.2 146.2 0 7.8-0.6 15.6-1.8 23.3l-26.7 165.3c-11.1 69.1-70.8 119.9-140.8 120l-310 0c-71.3 0-131.7-52.7-141.3-123.4l-39.8-291.1c-0.1-0.6-0.3-1.2-0.4-1.8l-7.7-45.7c-2.8-16.5-15.6-29.6-32.1-32.8l-83.4-16c-17.9-3.4-29.5-20.7-26.1-38.6 2.9-15.1 15.7-25.8 30.4-26.6l4.1 0z m629.4 187l-444.3 0 35.1 256.7c5.2 38 37.7 66.4 76.1 66.4l310 0c37.7 0 69.8-27.4 75.8-64.5l26.7-165.3c0.7-4.2 1-8.5 1-12.9 0-44.4-36-80.5-80.4-80.4z" />
-    </svg>
-  )
+  const getCurrentBundle = () => {
+    return bundleOptions.find(b => b.id === selectedBundle) || bundleOptions[0]
+  }
 
   return (
     <>
       {/* Sticky Buy Button - Fixed at bottom */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-        <div className="max-w-7xl mx-auto p-2">
-          
-          {/* Mobile Layout - Responsive adjustments */}
-          <div className="md:hidden pt-1 pb-3 border-gray-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-orange-600">{price}</span>
-                <span className="text-xs text-gray-500 line-through">{originalPrice}</span>
-                <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">
-                  -{discount}% OFF
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onToggleWishlist}
-                  className={isWishlisted ? 'text-red-500 border-red-200' : ''}
+        {/* Main Sticky Bar */}
+        <div className="max-w-7xl mx-auto p-3">
+          <div className="flex items-center justify-between">
+            {/* Price Info */}
+            <div className="flex items-center gap-3">
+              <span className="text-lg font-bold text-orange-600">{price}</span>
+              <span className="text-xs text-gray-500 line-through">{originalPrice}</span>
+              <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">
+                -{discount}% OFF
+              </span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Bundle + Variant Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="flex items-center gap-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 text-sm"
                 >
-                  <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
-                </Button>
+                  <span className="font-medium">{selectedVariant} - {getCurrentBundle().title}</span>
+                  <ChevronDown className={`h-3 w-3 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
+                </button>
                 
-                <ShopifyBuyButtonCompact
-                  domain="sryxr0-ff.myshopify.com"
-                  storefrontAccessToken="cf54ba84fb3eeca3e76d2a30c008b2dc"
-                  productId="9799464026398"
-                  productName="Large Kitchen Pantry Cabinet Storage Organizer with Adjustable Shelves"
-                  productPrice={73.57}
-                  productImage="https://picsum.photos/400/400?random=60"
-                  onAddToCart={(quantity) => {
-                    onAddToCart?.(quantity)
-                    setShowCart(true)
-                    setTimeout(() => setShowCart(false), 2000)
-                  }}
-                />
+                {showDropdown && (
+                  <div className="absolute bottom-full mb-2 left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg min-w-[250px]">
+                    <div className="p-1">
+                      {bundleOptions.map((bundle) => (
+                        <div key={bundle.id}>
+                          {variants.map((variant) => (
+                            <div
+                              key={`${bundle.id}-${variant}`}
+                              className={`p-2 text-sm cursor-pointer hover:bg-gray-50 rounded ${
+                                selectedBundle === bundle.id && selectedVariant === variant 
+                                  ? 'bg-orange-50 text-orange-600' 
+                                  : 'text-gray-700'
+                              }`}
+                              onClick={() => {
+                                onBundleChange?.(bundle.id)
+                                onVariantChange?.(variant)
+                                setShowDropdown(false)
+                              }}
+                            >
+                              {variant} / {bundle.title} - R$ {bundle.price.toFixed(2)}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
+              
+              {/* Buy Button */}
+              <ShopifyBuyButtonCompact
+                domain="sryxr0-ff.myshopify.com"
+                storefrontAccessToken="d336896a895872e293d9ea97de63b99c"
+                productId={productId}
+                productName={productName}
+                productPrice={parseFloat(price.replace('$', ''))}
+                productImage={productImage}
+                onAddToCart={handleAddToCart}
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Cart Success Toast */}
+      {/* Cart notification */}
       {showCart && (
-        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
           <div className="flex items-center gap-2">
             <ShoppingCart className="h-4 w-4" />
-            <span>Produto adicionado ao carrinho!</span>
+            <span className="text-sm">Adicionado ao carrinho!</span>
           </div>
         </div>
       )}
