@@ -122,11 +122,11 @@ export default function ProductPage() {
   )
 
   const productImages = [
-    "/Caixa 3 perfumes home.png",
-    "/Caixa 5 perfumes home.png",
-    "/Caixa 10 perfumes home.png",
-    "/Caixa perfumes no estoque 2.png",
-    "/Caixa perfumes no estoque.png"
+    "/caixa-3-perfumes-home.png",
+    "/caixa-5-perfumes-home.png",
+    "/caixa-10-perfumes-home.png",
+    "/caixa-perfumes-no-estoque-2.png",
+    "/caixa-perfumes-no-estoque.png"
   ]
 
   const reviews = reviewsData

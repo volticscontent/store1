@@ -26,7 +26,7 @@ export default function StickyBuyButton({
   discount = 59,
   productId = "49921179386142",
   productName = "Mystery Box Fragrance",
-  productImage = "/Caixa 3 perfumes home.png",
+  productImage = "/caixa-3-perfumes-home.png",
   onAddToCart,
   cartItems = 0,
   selectedVariant = "Female",
