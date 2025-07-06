@@ -109,27 +109,27 @@ const loadShopifySDK = (): Promise<any> => {
 // Função principal para queries do Shopify Storefront
 async function shopifyStorefrontQuery(query: string, variables: any, storefrontAccessToken: string, domain: string) {
   try {
-    const response = await fetch(`https://${domain}/api/2024-01/graphql.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
-      },
+  const response = await fetch(`https://${domain}/api/2024-01/graphql.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': storefrontAccessToken,
+    },
       body: JSON.stringify({ query, variables }),
-    })
+  })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
 
-    const data = await response.json()
-    
-    if (data.errors) {
+  const data = await response.json()
+  
+  if (data.errors) {
       console.error('GraphQL errors:', data.errors)
-      throw new Error(`GraphQL error: ${data.errors[0].message}`)
-    }
+    throw new Error(`GraphQL error: ${data.errors[0].message}`)
+  }
 
-    return data.data
+  return data.data
   } catch (error) {
     console.error('Shopify Storefront API error:', error)
     throw error
@@ -614,7 +614,7 @@ export function ShopifyBuyButton({
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <Button 
+      <Button
         onClick={handleBuyNow}
         disabled={isLoading}
         className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg disabled:opacity-50"
@@ -655,7 +655,7 @@ export function ShopifyBuyButtonCompact({
   }, [domain, productId, productName, productPrice, onAddToCart])
 
   return (
-    <Button 
+    <Button
       onClick={handleBuyNow}
       disabled={isLoading}
       className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
